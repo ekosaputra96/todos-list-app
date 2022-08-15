@@ -45,20 +45,22 @@ const loginHandler = async (req, res) => {
     if (!req.body.email || !req.body.password) {
         res.status(400).json({ msg: "Missing Credentials" });
     }
-    try {
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            res.status(400).json({ msg: "Email is not found" });
-        }
-        if (await bcrypt.compare(req.body.password, user.password)) {
-            res.status(200).json({
-                email: user.email,
-                token: generateToken(user),
-            });
-        } else {
-            res.status(400).json({ msg: "Password is wrong" });
-        }
-    } catch (error) {}
+    // try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+        res.status(400).json({ msg: "Email is not found" });
+    }
+    if (await bcrypt.compare(req.body.password, user.password)) {
+        res.status(200).json({
+            email: user.email,
+            token: generateToken(user),
+        });
+    } else {
+        res.status(400).json({ msg: "Password is wrong" });
+    }
+    // } catch (error) {
+    //     console.log(error)
+    // }
 };
 
 // generate token
